@@ -1,8 +1,27 @@
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
+
+--[[
+    run only at the startup once. to initialize the game.
+]]
+
 function love.load()
-    love.window.setTitle("Hello LÖVE")
-    love.graphics.setNewFont(24)
+    love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
+        fullscreen = false,
+        resizable = false,
+        vsync = true
+    })
 end
 
+--[[
+    called after update by love2d, used to draw anything on the screen or update it.
+]]
+
 function love.draw()
-    love.graphics.printf("Welcome to LÖVE", 0, love.graphics.getHeight() / 2 , love.graphics.getWidth(), "center")
+    love.graphics.printf(
+        'Hello Pong!!!', 
+        0, 
+        WINDOW_HEIGHT/2 - 6, 
+        WINDOW_WIDTH, 
+        'center')
 end
