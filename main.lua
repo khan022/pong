@@ -44,6 +44,9 @@ function love.load()
     -- Filter changing to nearest
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
+    -- set title for the game
+    love.window.setTitle('Air hockey!')
+
     -- "seed" time to generate random value
     math.randomseed(os.time()) 
 
@@ -227,7 +230,18 @@ function love.draw()
 
     ball:render()
 
+    -- function called to display the fps on the screen
+    displayFPS()
+
     -- end rendering at virtual resolution
     push:apply('end')
     
+end
+
+function displayFPS()
+    -- simple fps showing on the screen
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+
 end
