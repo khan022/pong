@@ -14,6 +14,27 @@ function Ball:init(x, y, width, height)
 
 end
 
+
+--[[
+    check wheather the ball and paddles are coliding or not
+]]
+
+function Ball:colides(paddle)
+    -- first check that if the left edge of either is farther to the right than the right edge to the other
+    if self.x > paddle.x + paddle.width or paddle.x > self.x + self.width then
+        return false
+    end
+
+    -- then check the bottom edge of either is higher than the bottom edge of the other
+    if self.y > paddle.y + paddle.height or paddle.y > self.y + self.height then
+        return false
+    end
+
+    -- if any of these two conditions are not true, then they are overlapping
+    return true
+
+end
+
 --[[
     places the ball in the middle of the screen.
 ]]
@@ -37,6 +58,7 @@ function Ball:update(dt)
     self.y = self.y + self.dy * dt
 
 end
+
 
 function Ball:render()
 
