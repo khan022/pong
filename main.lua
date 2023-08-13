@@ -100,8 +100,18 @@ end
 
 function love.update(dt)
 
+    -- game state serve in update
+    if gameState == 'serve' then
+        -- initialize velocity based on the last player's score
+        ball.dy = math.random(-50, 50)
+        if servingPlayer == 1 then
+            ball.dx = math.random(140, 200)
+        else
+            ball.dx = -math.random(140, 200)
+        end
+
     -- update the ball position in the play state
-    if gameState == 'play' then
+    elseif gameState == 'play' then
         -- ballX = ballX + ballDX * dt
         -- ballY = ballY + ballDY * dt version 0.5
         
@@ -142,6 +152,21 @@ function love.update(dt)
             ball.dy = -ball.dy
         end
 
+    end
+
+    -- check if the ball is moving out of left or right screen to count score
+    if ball.x < 0 then
+        servingPlayer = 1
+        player2Score = player2Score + 1
+        ball:reset()
+        gameState = 'serve'
+    end
+
+    if ball.x > VIRTUAL_WIDTH then
+        servingPlayer = 2
+        player1Score = player1Score + 1
+        ball:reset()
+        gameState = 'serve'
     end
 
     -- player 1 movement
