@@ -73,6 +73,8 @@ function love.load()
     -- player1Y = 30
     -- player2Y = VIRTUAL_HEIGHT - 50 version 0.5
 
+    servingPlayer = 1
+
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
 
@@ -270,18 +272,26 @@ function love.draw()
 
     love.graphics.setFont(smallFont)
     
+    displayScore()
+
     if gameState == 'start' then
-        love.graphics.printf('Hello Start State!', 0, 20, VIRTUAL_WIDTH, 'center')
-    else
-        love.graphics.printf('Hello Play State!', 0, 20, VIRTUAL_WIDTH, 'center')
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Welcome to the air hockey!', 0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Please press enter to start!', 0, 20, VIRTUAL_WIDTH, 'center')
+    elseif gameState == 'serve' then
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Player ' .. tostring(servingPlayer).. "'s serve!", 0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.printf('Please press enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
+    elseif gameState == 'play' then
+        -- no UI message in the play state
     end
 
     -- rendering the scores in the left and right centers 
 
-    love.graphics.setFont(scoreFont)
+    -- love.graphics.setFont(scoreFont)
 
-    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
-    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
+    -- love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
+    -- love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
 
     -- render the left paddle
     -- love.graphics.rectangle('fill', 10, 30, 5, 20) version 0.2
@@ -313,4 +323,16 @@ function displayFPS()
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
 
+end
+
+--[[
+    display the scores and count onto the screen with velocity.
+]]
+
+function displayScore()
+    -- draw player1 score on the left side and player2 score on the right side
+    love.graphics.setFont(scoreFont)
+
+    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
 end
