@@ -31,6 +31,9 @@ function love.load()
     -- Filter changing to nearest
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
+    -- "seed" time to generate random value
+    math.randomseed(os.time()) 
+
     -- changing the font to our chosen font
     smallFont = love.graphics.newFont('font.ttf', 8)
 
@@ -54,6 +57,19 @@ function love.load()
     player1Y = 30
     player2Y = VIRTUAL_HEIGHT - 50
 
+    -- velocity and position variables for the ball
+    ballX = VIRTUAL_WIDTH / 2 - 2
+    ballY = VIRTUAL_HEIGHT / 2 - 2
+
+    -- math random returns a random value between the left and right number
+    ballDX = math.random(2) == 1 and 100 or -100
+    ballDY = math.random(-50, 50)
+
+    -- game state for different part of the game
+    -- like menues, start, beginning, main game, high score list etc
+
+    gameState = 'start'
+
 end
 
 
@@ -65,19 +81,35 @@ function love.update(dt)
     -- player 1 movement
     if love.keyboard.isDown('w') then
         -- add negative paddle_speed to current y scaled by deltatime
-        player1Y = player1Y + -PADDLE_SPEED * dt
+        -- now we clamp the paddle so that it doesn't leave the screen
+        -- player1Y = player1Y + -PADDLE_SPEED * dt version 0.3
+        player1Y = math.max(0, player1Y + -PADDLE_SPEED * dt)
+
     elseif love.keyboard.isDown('s') then
         -- add positive paddle_speed to current y scaled by deltatime
-        player1Y = player1Y + PADDLE_SPEED * dt
+        -- we clamp the paddle to stop in the screen
+        -- player1Y = player1Y + PADDLE_SPEED * dt version 0.3
+        player1Y = math.min(VIRTUAL_HEIGHT - 20, player1Y + PADDLE_SPEED * dt)
     end
 
     -- player 2 movement
     if love.keyboard.isDown('up') then
         -- add negative paddle_speed to current y scaled by deltatime
-        player2Y = player2Y + -PADDLE_SPEED * dt
+        -- similar to player 1 stop the paddle inside the screen
+        -- player2Y = player2Y + -PADDLE_SPEED * dt version 0.3
+        player2Y = math.max(0, player2Y + -PADDLE_SPEED * dt)
+
     elseif love.keyboard.isDown('down') then
         -- add positive paddle_speed to current y scaled by deltatime
-        player2Y = player2Y + PADDLE_SPEED * dt
+        -- player2Y = player2Y + PADDLE_SPEED * dt
+        player2Y = math.min(VIRTUAL_HEIGHT - 20, player2Y + PADDLE_SPEED * dt)
+
+    end
+
+    -- update the ball position in the play state
+    if gameState == 'play' then
+        ballX = ballX + ballDX * dt
+        ballY = ballY + ballDY * dt
     end
 end
 
@@ -92,6 +124,25 @@ function love.keypressed(key)
     if key == 'escape' then
         --funtion to terminate the application
         love.event.quit()
+
+    -- if we press 'enter' at the start state we will enter the game
+    -- in the play mode the ball will move in random direction
+    elseif key == 'enter' or key == 'return' then
+        if gameState == 'start' then
+            gameState = 'play'
+        else
+            gameState = 'start'
+
+            -- start ball position at the middle of the screen
+            ballX = VIRTUAL_WIDTH / 2 - 2
+            ballY = VIRTUAL_HEIGHT / 2 - 2
+
+            -- giving the ball a random velocity in any direction
+            ballDX = math.random(2) == 1 and 100 or -100
+            ballDY = math.random(-50, 50) * 1.5
+        
+        end
+    
     end
 
 end
@@ -130,7 +181,7 @@ function love.draw()
     love.graphics.rectangle('fill', VIRTUAL_WIDTH - 10, player2Y, 5, 20)
 
     -- render the ball at center
-    love.graphics.rectangle('fill', VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
+    love.graphics.rectangle('fill', ballX, ballY, 4, 4)
 
     -- end rendering at virtual resolution
     push:apply('end')
