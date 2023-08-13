@@ -19,7 +19,7 @@ end
     check wheather the ball and paddles are coliding or not
 ]]
 
-function Ball:colides(paddle)
+function Ball:collides(paddle)
     -- first check that if the left edge of either is farther to the right than the right edge to the other
     if self.x > paddle.x + paddle.width or paddle.x > self.x + self.width then
         return false
