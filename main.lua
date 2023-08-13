@@ -163,12 +163,17 @@ function love.draw()
     -- version 0.0
 
     love.graphics.setFont(smallFont)
-    love.graphics.printf('Hello Pong!!!', 0, 20, VIRTUAL_WIDTH, 'center')
-    -- version 0.2
+    
+    if gameState == 'start' then
+        love.graphics.printf('Hello Start State!', 0, 20, VIRTUAL_WIDTH, 'center')
+    else
+        love.graphics.printf('Hello Play State!', 0, 20, VIRTUAL_WIDTH, 'center')
+    end
 
     -- rendering the scores in the left and right centers 
 
     love.graphics.setFont(scoreFont)
+    
     love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
     love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
 
