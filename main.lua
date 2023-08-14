@@ -75,8 +75,8 @@ function love.load()
 
     servingPlayer = 1
 
-    player1 = Paddle(10, 30, 5, 20)
-    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
+    player1 = Paddle(10, 30, 5, 30)
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 30)
 
     -- velocity and position variables for the ball
     -- ballX = VIRTUAL_WIDTH / 2 - 2
